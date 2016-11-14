@@ -1,6 +1,6 @@
 def modify_letters(word, banned_chars):
-	return "banned"
+	return "BANNED-let"
 
 def black_out(word):
-	return "banned"
+	return "BANNED-rdct"
 	

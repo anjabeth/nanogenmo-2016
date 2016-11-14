@@ -12,7 +12,6 @@ class Chapter(object):
 		self.id_num = id_num
 		self.banned_chars = banned_chars
 		self.model = model
-		print type(model)
 		self.text = self.create_text()
 
 	def create_text(self):
@@ -25,12 +24,13 @@ class Chapter(object):
 
 		#split words on spaces
 		initial_words = initial_text.split(" ")
+		new_words = list()
 
 		#determine what happens to 'banned' words
-		for word in iniital_words:
+		for word in initial_words:
 			#check all chars to see if word contains any, break after it finds one
 			banned = False
-			for char in banned_chars:
+			for char in self.banned_chars:
 				if char in word:
 					banned = True
 					break
@@ -39,16 +39,18 @@ class Chapter(object):
 				num = random.randint(0, 10)
 				if num <= 7:
 					#find synonym
-					syn.find_acceptable_synonym(word, banned_chars)
+					new_words.append(syn.find_acceptable_synonym(word, self.banned_chars))
 					#if no synonym found, try letter replacements
 				elif num <= 9:
 					#find letter replacements (MAKE SURE TO CHECK IN LETTER REPLACEMENT METHOD WHICH CHARS ARE CURRENTLY BANNED)
-					mod.modify_letters(word, banned_chars)
+					new_words.append(mod.modify_letters(word, self.banned_chars))
 					#if no suitable replacement, black word out
 				else:
-					mod.black_out(word)
+					new_words.append(mod.black_out(word))
 					#black word out
+			else:
+				new_words.append(word)
 
 		#join words back up into one string
-		chapter_text = " ".join(initia_words)
+		chapter_text =(' ').join(new_words)
 		return chapter_text
