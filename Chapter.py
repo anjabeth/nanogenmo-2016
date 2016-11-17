@@ -18,12 +18,12 @@ class Chapter(object):
 		self.text = self.create_text()
 
 	def create_text(self):
-		""" should return the text of the chapter as a string, with all necessary substitutions made"""
+		"""returs the text of the chapter as a string, with all necessary substitutions made"""
 
 		#create initial, unmodified text
 		initial_text = ""
 		for i in range(SENTENCES_PER_CHAPTER):
-			initial_text += str(self.model.make_sentence())
+			initial_text += str(self.model.make_sentence()).encode('utf-8')
 
 		parseable_initial_text = TextBlob(initial_text)
 		new_words = list()
@@ -43,7 +43,9 @@ class Chapter(object):
 					num = random.randint(0, 10)
 					if num <= 7:
 						#find synonym
-						new_words.append(syn_gen.find_acceptable_synonym(word, self.banned_chars))
+						synonym = syn_gen.find_acceptable_synonym(word, self.banned_chars)
+						print synonym
+						new_words.append(synonym)
 						#if no synonym found, try letter replacements
 					elif num <= 9:
 						#find letter replacements (MAKE SURE TO CHECK IN LETTER REPLACEMENT METHOD WHICH CHARS ARE CURRENTLY BANNED)
