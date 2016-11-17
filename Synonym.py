@@ -17,15 +17,25 @@ class Synonym:
 		
 		all_syns = self.wordApi.getRelatedWords(word, relationshipTypes = "synonym")
 		if all_syns is not None:
-			#temporary 
-			synonym = all_syns[0].words[0]
+			#find first synonym that does not contain any of the banned chars
+			synonym = None
 			for syn in all_syns:
-				print syn.words
+				banned = False
+				for char in banned_chars:
+					if char in syn.words[0]:
+						banned = True
+						break
+				if banned is False:
+					synonym = syn.words[0]
+					break
+			if synonym is not None:
+				return "Orig: " + word + "SYNONYM:" + synonym
+			
 		else: #couldn't find a synonym
 			#call a different function
 			return "NO SYN FOUND" #for now
 		
-		return "Orig: " + word + "SYNONYM:" + synonym
+		
 		
 		
 
