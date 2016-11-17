@@ -5,7 +5,7 @@ from Chapter import Chapter
 from gutenberg.acquire import load_etext
 from gutenberg.cleanup import strip_headers
 
-NUM_CHAPTERS = 5
+NUM_CHAPTERS = 1
 
 def main():
 		model = create_model()
