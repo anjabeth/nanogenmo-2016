@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from wordnik import *
-from PyDictionary import PyDictionary
 import random
 import json
+from wordnik import *
+from PyDictionary import PyDictionary
+
 
 class Synonym:
 
@@ -16,7 +17,21 @@ class Synonym:
 
 	def find_acceptable_synonym(self, word, banned_chars):
 		"""finds a synonym for word that does not contain any of banned_chars"""
-	
+		wordnik_syn = self.get_wordnik_syn(word, banned_chars)
+		if wordnik_syn is not None:
+			return wordnik_syn
+
+		#didn't find wordnik synonym, try PyDict synonym
+		pydict_syn = self.get_pydict_syn(word, banned_chars)
+		if pydict_syn is not None:
+			return pydict_syn
+
+		#couldn't find a synonym- eventually call a different function
+		#temporarily
+		return "NO SYN FOUND" 
+		
+	def get_wordnik_syn(self, word, banned_chars):
+		"""gets synonym w/o banned characters via wordnik API. If no synonym found, returns None"""
 		all_syns = self.wordApi.getRelatedWords(word, relationshipTypes = "synonym")
 
 		if all_syns is not None:
@@ -31,9 +46,12 @@ class Synonym:
 					synonym = syn.words[0]
 					if synonym is not None:
 						return synonym
-
-		#didn't find wordnik synonym, try PyDict synonym
+		return None
+	
+	def get_pydict_syn(self, word, banned_chars):
+		"""gets synonym w/o banned chars from PyDict. If none found, returns None"""
 		pydict_syns = self.dictionary.synonym(word)
+
 		if pydict_syns is not None:
 			for syn in pydict_syns:
 				banned = False
@@ -45,13 +63,6 @@ class Synonym:
 					synonym = syn
 					if synonym is not None:
 						return synonym
-		#couldn't find a synonym
-		#eventually call a different function
-		#temporarily
-		return "NO SYN FOUND" 
-		
-		
-		
-		
+		return None
 
 		

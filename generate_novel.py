@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import markovify
-from Chapter import Chapter
 from gutenberg.acquire import load_etext
 from gutenberg.cleanup import strip_headers
+from Chapter import Chapter
 
 NUM_CHAPTERS = 5
 
