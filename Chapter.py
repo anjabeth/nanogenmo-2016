@@ -14,6 +14,9 @@ class Chapter(object):
 	def __init__(self, id_num, banned_chars, model):
 		self.id_num = id_num
 		self.banned_chars = banned_chars
+		for char in self.banned_chars:
+			print char
+		print "----------------"
 		self.model = model
 		self.text = self.create_text()
 
@@ -23,7 +26,11 @@ class Chapter(object):
 		#create initial, unmodified text
 		initial_text = ""
 		for i in range(SENTENCES_PER_CHAPTER):
-			initial_text += str(self.model.make_sentence()).encode('utf-8')
+			try:
+				initial_text += str(self.model.make_sentence()).encode('utf-8')
+			except UnicodeEncodeError:
+				i -= 1
+
 
 		parseable_initial_text = TextBlob(initial_text)
 		new_words = list()
@@ -44,7 +51,6 @@ class Chapter(object):
 					if num <= 7:
 						#find synonym
 						synonym = syn_gen.find_acceptable_synonym(word, self.banned_chars)
-						print synonym
 						new_words.append(synonym)
 						#if no synonym found, try letter replacements
 					elif num <= 9:
