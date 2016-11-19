@@ -5,7 +5,7 @@ from gutenberg.acquire import load_etext
 from gutenberg.cleanup import strip_headers
 from Chapter import Chapter
 
-NUM_CHAPTERS = 5
+NUM_CHAPTERS = 10
 
 CHAR_REMOVE_ORDER = ("z", "q", "x", "j", "k", "v", "b", "p", "y", "g", "f", "w", "m", "u", "c", "l", "d", "r", "h", "s", "n", "i", "o", "a", "t", "e")
 

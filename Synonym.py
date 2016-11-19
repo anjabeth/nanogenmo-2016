@@ -4,7 +4,7 @@ import random
 import json
 from wordnik import *
 from PyDictionary import PyDictionary
-
+from Modify import Modify
 
 class Synonym:
 
@@ -14,6 +14,7 @@ class Synonym:
 		self.client = swagger.ApiClient(self.apiKey, self.apiUrl)
 		self.wordApi = WordApi.WordApi(self.client)
 		self.dictionary = PyDictionary()
+		self.mod = Modify()
 
 	def find_acceptable_synonym(self, word, banned_chars):
 		"""finds a synonym for word that does not contain any of banned_chars"""
@@ -28,7 +29,7 @@ class Synonym:
 
 		#couldn't find a synonym- eventually call a different function
 		#temporarily
-		return "NO SYN FOUND" 
+		return mod.modify_letters(word, banned_chars)
 		
 	def get_wordnik_syn(self, word, banned_chars):
 		"""gets synonym w/o banned characters via wordnik API. If no synonym found, returns None"""

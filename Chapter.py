@@ -20,37 +20,37 @@ class Chapter(object):
 	def create_text(self):
 		"""returs the text of the chapter as a string, with all necessary substitutions made"""
 
-		parseable_initial_text = self.create_initial_text()
+		initial_text = self.create_initial_text()
+		initial_words = initial_text.split(" ")
 		new_words = list()
 		syn_gen = Synonym()
 		mod = Modify()
 
-		for sentence in parseable_initial_text.sentences:
-			#determine what happens to 'banned' words
-			for word in sentence.words:
-				#check all chars to see if word contains any, break after it finds one
-				banned = False
-				for char in self.banned_chars:
-					if char in word:
-						banned = True
-						break
+		
+		#determine what happens to 'banned' words
+		for word in initial_words:
+			#check all chars to see if word contains any, break after it finds one
+			banned = False
+			for char in self.banned_chars:
+				if char in word:
+					banned = True
+					break
 
-				if banned:
-					num = random.randint(0, 10)
-					if num <= 7:
-						#find synonym
-						synonym = syn_gen.find_acceptable_synonym(word, self.banned_chars)
-						new_words.append(synonym)
-						#if no synonym found, try letter replacements
-					elif num <= 9:
-						#find letter replacements (MAKE SURE TO CHECK IN LETTER REPLACEMENT METHOD WHICH CHARS ARE CURRENTLY BANNED)
-						new_words.append(mod.modify_letters(word, self.banned_chars))
-						#if no suitable replacement, black word out
-					else:
-						new_words.append(mod.black_out(word))
-						#black word out
+			if banned:
+				num = random.randint(0, 10)
+				if num <= 7:
+					#find synonym
+					synonym = syn_gen.find_acceptable_synonym(word, self.banned_chars)
+					new_words.append(synonym)
+					#if no synonym found, try letter replacements
+				elif num <= 9:
+					#find letter replacements 
+					new_words.append(mod.modify_letters(word, self.banned_chars))
 				else:
-					new_words.append(word)
+					#black word out
+					new_words.append(mod.black_out(word))
+			else:
+				new_words.append(word)
 
 		#join words back up into one string
 		return self.join_words(new_words)
@@ -64,7 +64,7 @@ class Chapter(object):
 			except UnicodeEncodeError:
 				i -= 1
 
-		return TextBlob(initial_text)
+		return initial_text
 		
 	def join_words(self, words):
 		"""joins list of processed words back into one string"""
