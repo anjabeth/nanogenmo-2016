@@ -15,9 +15,15 @@ class Synonym:
 		self.wordApi = WordApi.WordApi(self.client)
 		self.dictionary = PyDictionary()
 		self.mod = Modify()
+		self.words_without_synonyms = list()
 
 	def find_acceptable_synonym(self, word, banned_chars):
 		"""finds a synonym for word that does not contain any of banned_chars"""
+
+		#word already known not to have synonym, misspell instead
+		if word in self.words_without_synonyms:
+			return self.mod.modify_letters(word, banned_chars)
+
 		wordnik_syn = self.get_wordnik_syn(word, banned_chars)
 		if wordnik_syn is not None:
 			return wordnik_syn
@@ -27,9 +33,9 @@ class Synonym:
 		if pydict_syn is not None:
 			return pydict_syn
 
-		#couldn't find a synonym- eventually call a different function
-		#temporarily
-		return mod.modify_letters(word, banned_chars)
+		#couldn't find a synonym - add to list of words w/o synonyms and respell instead
+		self.words_without_synonyms.append(word)
+		return self.mod.modify_letters(word, banned_chars)
 		
 	def get_wordnik_syn(self, word, banned_chars):
 		"""gets synonym w/o banned characters via wordnik API. If no synonym found, returns None"""

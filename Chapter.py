@@ -6,7 +6,7 @@ from textblob import TextBlob
 from Synonym import Synonym 
 from Modify import Modify
 
-SENTENCES_PER_CHAPTER = 10
+SENTENCES_PER_CHAPTER = 5
 
 class Chapter(object):
 
@@ -60,7 +60,7 @@ class Chapter(object):
 		initial_text = ""
 		for i in range(SENTENCES_PER_CHAPTER):
 			try:
-				initial_text += str(self.model.make_sentence()).encode('utf-8')
+				initial_text += str(self.model.make_sentence()).encode('utf-8') + " "
 			except UnicodeEncodeError:
 				i -= 1
 

@@ -1,23 +1,32 @@
 # -*- coding: utf-8 -*-
 
+import sys
+import io
+import textwrap
 import markovify
 from gutenberg.acquire import load_etext
 from gutenberg.cleanup import strip_headers
 from Chapter import Chapter
 
 NUM_CHAPTERS = 10
+OUTPUT_LOC = "novel.txt"
 
 CHAR_REMOVE_ORDER = ("z", "q", "x", "j", "k", "v", "b", "p", "y", "g", "f", "w", "m", "u", "c", "l", "d", "r", "h", "s", "n", "i", "o", "a", "t", "e")
 
 def main():
-		model = create_model()
-		chapters = create_chapters(model) #this will be a list of all the chapters, they should be complete at this point (all replacement/etc done)
+	model = create_model()
+	chapters = create_chapters(model) 
+	
+	clearfile()
 
-		#just to check
-		for i in range(NUM_CHAPTERS):
-			print "Chapter" + str(i) + "********************************************* \n\n"
-			print chapters[i].text
-		
+	f = open(OUTPUT_LOC, "a")
+	write_chapters(f, chapters)
+	f.close()
+	
+	print "Novel written to" + str(OUTPUT_LOC)
+	
+	
+
 
 def create_chapters(model):
 	all_chapters = list() #list that will hold all the chapters
@@ -54,6 +63,21 @@ def create_model():
 
 	return all_model
 
+def write_chapters(file, chapters):
+	"""writes chapters to file using textwrap to make lines readable length"""
+
+	for i in range(NUM_CHAPTERS):
+		file.write("Chapter" + str(i + 1) + "******************************************* \n")
+		lines = textwrap.wrap(chapters[i].text)
+		for line in lines:
+			file.write((line).encode("utf-8") + "\n")
+		file. write("\n\n\n\n")
+
+def clearfile():
+	"""clears input file, utility for when running script multiple times"""
+	f = open(OUTPUT_LOC, "w")
+	f.write("A Procedurally Generated Novel By Anja Beth\n\n")
+	f.close()
 
 if __name__ == '__main__':
 	main()
