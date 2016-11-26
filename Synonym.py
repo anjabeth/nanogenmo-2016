@@ -15,7 +15,7 @@ class Synonym:
 		self.wordApi = WordApi.WordApi(self.client)
 		self.dictionary = PyDictionary()
 		self.mod = Modify()
-		self.words_without_synonyms = list()
+		self.words_without_synonyms = dict()
 
 	def find_acceptable_synonym(self, word, banned_chars):
 		"""finds a synonym for word that does not contain any of banned_chars"""
@@ -34,7 +34,7 @@ class Synonym:
 			return pydict_syn
 
 		#couldn't find a synonym - add to list of words w/o synonyms and respell instead
-		self.words_without_synonyms.append(word)
+		self.words_without_synonyms[word] = True
 		return self.mod.modify_letters(word, banned_chars)
 		
 	def get_wordnik_syn(self, word, banned_chars):
