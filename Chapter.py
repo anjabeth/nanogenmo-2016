@@ -6,24 +6,24 @@ from textblob import TextBlob
 from Synonym import Synonym 
 from Modify import Modify
 
-SENTENCES_PER_CHAPTER = 5
+SENTENCES_PER_CHAPTER = 110
 
 class Chapter(object):
 
 	#constructor for a chapter
-	def __init__(self, id_num, banned_chars, model):
+	def __init__(self, id_num, banned_chars, model, syn_gen):
 		self.id_num = id_num
 		self.banned_chars = banned_chars
 		self.model = model
+		self.syn_gen = syn_gen
 		self.text = self.create_text()
-
+		
 	def create_text(self):
 		"""returs the text of the chapter as a string, with all necessary substitutions made"""
 
 		initial_text = self.create_initial_text()
 		initial_words = initial_text.split(" ")
 		new_words = list()
-		syn_gen = Synonym()
 		mod = Modify()
 
 		
@@ -40,7 +40,7 @@ class Chapter(object):
 				num = random.randint(0, 10)
 				if num <= 7:
 					#find synonym
-					synonym = syn_gen.find_acceptable_synonym(word, self.banned_chars)
+					synonym = self.syn_gen.find_acceptable_synonym(word, self.banned_chars)
 					new_words.append(synonym)
 					#if no synonym found, try letter replacements
 				elif num <= 9:

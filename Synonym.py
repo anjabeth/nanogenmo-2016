@@ -24,6 +24,7 @@ class Synonym:
 		if word in self.words_without_synonyms:
 			return self.mod.modify_letters(word, banned_chars)
 
+		
 		wordnik_syn = self.get_wordnik_syn(word, banned_chars)
 		if wordnik_syn is not None:
 			return wordnik_syn

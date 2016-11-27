@@ -7,6 +7,7 @@ import markovify
 from gutenberg.acquire import load_etext
 from gutenberg.cleanup import strip_headers
 from Chapter import Chapter
+from Synonym import Synonym
 
 NUM_CHAPTERS = 25
 OUTPUT_LOC = "novel.txt"
@@ -15,7 +16,8 @@ CHAR_REMOVE_ORDER = ("z", "q", "x", "j", "k", "v", "b", "p", "y", "g", "f", "w",
 
 def main():
 	model = create_model()
-	chapters = create_chapters(model) 
+	syn_gen = Synonym()
+	chapters = create_chapters(model, syn_gen) 
 	
 	clearfile()
 
@@ -28,10 +30,10 @@ def main():
 	
 
 
-def create_chapters(model):
+def create_chapters(model, syn_gen):
 	all_chapters = list() #list that will hold all the chapters
 	for i in range(NUM_CHAPTERS):
-		new_chap = Chapter(i, CHAR_REMOVE_ORDER[0:i+1], model) #this isn't done, it needs to take an increasing list of banned characters (also the constructor in Chpater isn't done yet)
+		new_chap = Chapter(i, CHAR_REMOVE_ORDER[0:i+1], model, syn_gen) #this isn't done, it needs to take an increasing list of banned characters (also the constructor in Chpater isn't done yet)
 		all_chapters.append(new_chap)
 	return all_chapters
 
