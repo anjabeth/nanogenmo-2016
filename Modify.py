@@ -1,10 +1,8 @@
-class Modify:\
-
-	#order of eliminations: ("z", "q", "x", "j", "k", "v", "b", "p", "y", "g", "f", "w", "m", "u", "c", "l", "d", "r", "h", "s", "n", "i", "o", "a", "t", "e")
-
-	#note - maybe look into letters you can eliminate in certain contexts? abstract -> abstrat, painting -> paining (maybe like 2-consonant pairs?)
+class Modify:
+	"""Modify object can misspell or redact words to avoid banned characters"""
 
 	def __init__(self):
+		"""Create Modify and initialize dictionary of letter replacements"""
 		self.replace_dict = dict()
 		self.replace_dict["q"] = ("k")
 		self.replace_dict["x"] = ("ks")
@@ -19,11 +17,10 @@ class Modify:\
 
 
 	def modify_letters(self, word, banned_chars):
-		""" modifies letters of a given word using replace_dict to remove banned characters"""
+		"""Modify letters of a given word using replace_dict to remove banned characters"""
 		word = word.decode("utf-8")
 		new_word = ""
 
-		#replace chars as needed
 		for char in word:
 			if char in banned_chars:
 				if char in self.replace_dict:
@@ -35,13 +32,12 @@ class Modify:\
 				#characters successfully replaced, return new_word
 				new_word += char
 		
-		
 		return new_word
 
 	
 
 	def black_out(self, word):
-		"""redacts a given word"""
+		"""Redact a given word"""
 		black_out_word = ""
 		for char in word:
 			black_out_word += u"\u2588"

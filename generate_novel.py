@@ -9,12 +9,18 @@ from gutenberg.cleanup import strip_headers
 from Chapter import Chapter
 from Synonym import Synonym
 
+""" Generates a progressively lipogrammatic novel (modeled after Mark Dunn's Ella Minnow Pea) with text from Project Guternberg mystery and crime novels.
+
+	Written by Anja Beth Swoap 11/29/16
+"""
+
 NUM_CHAPTERS = 25
 OUTPUT_LOC = "novel.txt"
 
 CHAR_REMOVE_ORDER = ("z", "q", "x", "j", "k", "v", "b", "p", "y", "g", "f", "w", "m", "u", "c", "l", "d", "r", "h", "s", "n", "i", "o", "a", "t", "e")
 
 def main():
+	"""Generate the novel"""
 	model = create_model()
 	syn_gen = Synonym()
 	chapters = create_chapters(model, syn_gen) 
@@ -29,15 +35,21 @@ def main():
 	
 	
 
-
 def create_chapters(model, syn_gen):
-	all_chapters = list() #list that will hold all the chapters
+	"""Create all individual chapters (returns chapters in synonymized/misspelled/redacted form) """
+
+	all_chapters = list() 
 	for i in range(NUM_CHAPTERS):
-		new_chap = Chapter(i, CHAR_REMOVE_ORDER[0:i+1], model, syn_gen) #this isn't done, it needs to take an increasing list of banned characters (also the constructor in Chpater isn't done yet)
+		new_chap = Chapter(i, CHAR_REMOVE_ORDER[0:i+1], model, syn_gen) 
 		all_chapters.append(new_chap)
 	return all_chapters
 
+
+
 def create_model():
+	"""Read in Project Gutenberg data, convert each into a markovify Text model object, then combine them into one model. Returns the model. 
+	"""
+
 	eap_1 = strip_headers(load_etext(2147)).strip() #edgar allan poe vol 1
 	eap_2 = strip_headers(load_etext(2148)).strip() #edgar allan poe vol 2
 	dickens = strip_headers(load_etext(807)).strip() #charles dickens crime stories
@@ -65,8 +77,9 @@ def create_model():
 
 	return all_model
 
+
 def write_chapters(file, chapters):
-	"""writes chapters to file using textwrap to make lines readable length"""
+	"""Write chapters to file using textwrap to make lines of readable length"""
 
 	for i in range(NUM_CHAPTERS):
 		file.write("Chapter" + str(i + 1) + "******************************************* \n")
@@ -75,8 +88,10 @@ def write_chapters(file, chapters):
 			file.write((line).encode("utf-8") + "\n")
 		file. write("\n\n\n\n")
 
+
+
 def clearfile():
-	"""clears input file, utility for when running script multiple times"""
+	"""Clear input file - utility for when running script multiple times"""
 	f = open(OUTPUT_LOC, "w")
 	f.write("A Procedurally Generated Novel By Anja Beth\n\n")
 	f.close()
