@@ -26,7 +26,7 @@ The end result is a novel that doesn't make much sense, but sure is fun to look 
 
 If you want to generate your own novel, here's what you need to do:
 
-A quick note about Gutenberg: it doesn't play very nice with Windows, but I fixed it like [this](http://stackoverflow.com/questions/33714698/installing-bsddb3-6-1-1-in-windows-filenotfounderror-db-include-db-h)
+A quick note about Gutenberg: it doesn't play very nice with Windows, but I fixed it like [this](http://stackoverflow.com/questions/33714698/installing-bsddb3-6-1-1-in-windows-filenotfounderror-db-include-db-h). It also won't work with Python 3 (3.x won't work with bsddb, which is part of Gutenberg). This should only apply if you're on a Windows machine, but I haven't tested it on Unix, so take that with a grain of salt.
 
 ```
 pip install gutenberg #utility for stripping and formatting Project Gutenberg texts
